@@ -42,9 +42,9 @@ public class Processor {
         public void run() {
             while (true) {
                 try {
-//                    while (queue.size() == 0) {
-//                        this.sleep(1000);
-//                    }
+                    while (queue.size() == 0) {
+                        this.sleep(1000);
+                    }
                     String id = queue.poll();
                     String message = toProcess.get(id);
                     message = "Message processed: " + message;

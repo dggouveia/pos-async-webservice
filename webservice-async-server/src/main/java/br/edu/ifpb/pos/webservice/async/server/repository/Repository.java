@@ -1,11 +1,14 @@
 package br.edu.ifpb.pos.webservice.async.server.repository;
 
+import br.edu.ifpb.pos.webservice.async.notifier.Notifier.NotifierSingleton;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -42,7 +45,8 @@ public class Repository {
     
     public void addResponse (String id, String message){
         this.responses.put(id, message);
-    }
+        new NotifyThread(id).start();
+    }        
     
     public String getResponse (String id){
         String response = null;
@@ -63,6 +67,26 @@ public class Repository {
         } catch (Exception e) {
             return null;
         }
+    }
+    
+    private class NotifyThread extends Thread{
+
+        private String id;
+        
+        public NotifyThread (String id){
+            this.id = id;
+        }
+        
+        @Override
+        public void run() {
+            while (!NotifierSingleton.getInstance().notify(id)){
+                try {
+                    this.sleep(1000);
+                } catch (InterruptedException ex) {
+                }
+            }
+        }
+        
     }
 
 }

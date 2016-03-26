@@ -9,6 +9,7 @@
     <modules>
         <module>webservice-async-server</module>
         <module>webservice-async-client</module>
+        <module>webservice-async-notifier</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
