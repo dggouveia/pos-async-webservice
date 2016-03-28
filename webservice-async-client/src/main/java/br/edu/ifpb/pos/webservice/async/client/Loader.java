@@ -1,6 +1,5 @@
 package br.edu.ifpb.pos.webservice.async.client;
 
-import br.edu.ifpb.pos.webservice.async.notifier.SubscriberSingleton;
 import br.edu.ifpb.pos.webservice.async.server.productor.Productor;
 import br.edu.ifpb.pos.webservice.async.server.productor.ProductorSingleton;
 import java.io.BufferedReader;
@@ -24,6 +23,7 @@ public class Loader {
         PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
         pw.println(id);
         service.request(id, "Qualquer");
+        System.out.println("Passou do request");
         BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         String subscriberResponse = reader.readLine();
         if (subscriberResponse.equals("true")) {
