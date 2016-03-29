@@ -17,20 +17,26 @@ public class Processor {
     private Queue<String> queue;
     private Repository repository;
     private Thread thread;
+    private static Processor instance;
 
-    public Processor() {
+    private Processor() {
         this.toProcess = new HashMap<>();
         this.repository = Repository.getInstance();
-        this.queue = new LinkedList<>();        
+        this.queue = new LinkedList<>();
+    }
+
+    public static Processor getInstance() {
+        if (instance == null) {
+            instance = new Processor();
+        }
+        return instance;
     }
 
     public void requestProcess(String id, String message) {
 //        Thread.sleep(10000);
-        if (repository.hasId(id)) {
-            toProcess.put(id, message);
-            queue.add(id);
-        }
-        if (thread == null){
+        toProcess.put(id, message);
+        queue.add(id);
+        if (thread == null) {
             thread = new ProcessThread();
             thread.start();
         }
@@ -42,16 +48,18 @@ public class Processor {
         public void run() {
             while (true) {
                 try {
+                    // caso a fila esteja vazia, esperar
                     while (queue.size() == 0) {
                         this.sleep(1000);
                     }
                     String id = queue.poll();
                     String message = toProcess.get(id);
                     message = "Message processed: " + message;
+                    long time = Math.round(Math.random() * 10000);
+                    System.out.println(time);
+                    this.sleep(time);
                     toProcess.remove(id);
                     repository.addResponse(id, message);
-                    this.sleep(Long.parseLong("" + Math.round(Math.random() * 10000)));
-                    // caso a fila esteja vazia, esperar
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }

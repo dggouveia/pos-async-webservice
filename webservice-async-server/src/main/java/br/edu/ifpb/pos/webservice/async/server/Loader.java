@@ -1,6 +1,7 @@
 package br.edu.ifpb.pos.webservice.async.server;
 
-import br.edu.ifpb.pos.webservice.async.server.productor.Productor;
+import br.edu.ifpb.pos.webservice.async.server.channels.RequestChannel;
+import br.edu.ifpb.pos.webservice.async.server.channels.ResponseChannel;
 import javax.xml.ws.Endpoint;
 
 /**
@@ -11,6 +12,7 @@ import javax.xml.ws.Endpoint;
 public class Loader {
 
     public static void main(String[] args) {
-        Endpoint.publish("http://localhost:8080/service", new Productor());
+        Endpoint.publish("http://localhost:8080/responsechannel", new ResponseChannel());
+        Endpoint.publish("http://localhost:8080/requestchannel", new RequestChannel());
     }
 }

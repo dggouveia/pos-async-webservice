@@ -8,9 +8,9 @@ import javax.jws.WebService;
  *
  * @author douglasgabriel
  */
-@WebService(name = "Subscriber"
+@WebService(name = "PushingChannel"
         , targetNamespace = "http://notifier.async.webservice.pos.ifpb.edu.br/")
-public interface Subscriber {
+public interface PushingChannel {
     
-    public Socket subscribe (String hash) throws RemoteException;
+    public boolean subscribe (String id) throws RemoteException;
 }

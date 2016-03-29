@@ -11,14 +11,14 @@ import javax.xml.ws.Service;
  * @author douglasgabriel
  * @version 0.1
  */
-public class SubscriberSingleton {
+public class PushingChannelSingleton {
     
-private static Subscriber subscriber = null;
+private static PushingChannel subscriber = null;
 
-    private SubscriberSingleton() {
+    private PushingChannelSingleton() {
     }
 
-    public static Subscriber getInstance() {
+    public static PushingChannel getInstance() {
         if (subscriber == null) {
             try {
                 subscriber = retrieveSubscriber();
@@ -32,11 +32,11 @@ private static Subscriber subscriber = null;
     /**
      * Metodo responsavel por recuperar a instancia do Web Service basico.
      */
-    private static Subscriber retrieveSubscriber() throws MalformedURLException, IOException {
+    private static PushingChannel retrieveSubscriber() throws MalformedURLException, IOException {
         URL url = new URL("http://localhost:9001/subscriber");
-        QName qname = new QName("http://notifier.async.webservice.pos.ifpb.edu.br/", "Subscriber");
+        QName qname = new QName("http://notifier.async.webservice.pos.ifpb.edu.br/", "PushingChannel");
         Service service = Service.create(url, qname);
-        return service.getPort(Subscriber.class);
+        return service.getPort(PushingChannel.class);
     }
 
     

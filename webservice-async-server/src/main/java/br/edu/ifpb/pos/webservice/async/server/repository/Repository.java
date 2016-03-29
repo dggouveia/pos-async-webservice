@@ -2,13 +2,11 @@ package br.edu.ifpb.pos.webservice.async.server.repository;
 
 import br.edu.ifpb.pos.webservice.async.notifier.Notifier.NotifierSingleton;
 import java.security.MessageDigest;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Set;
 
 /**
  *
@@ -17,12 +15,12 @@ import java.util.logging.Logger;
  */
 public class Repository {
 
-    private List<String> identities;
+    private Set<String> identities;
     private Map<String, String> responses;
     private static Repository instance;
 
     private Repository() {
-        this.identities = new ArrayList<>();
+        this.identities = new HashSet<>();
         this.responses = new HashMap<>();
     }
     
@@ -41,6 +39,10 @@ public class Repository {
     
     public boolean hasId (String id){
         return this.identities.contains(id);
+    }
+    
+    public void addId (String id){
+        this.identities.add(id);
     }
     
     public void addResponse (String id, String message){
@@ -79,12 +81,14 @@ public class Repository {
         
         @Override
         public void run() {
-            while (!NotifierSingleton.getInstance().notify(id)){
+            do {
+                NotifierSingleton.getInstance().notify(id);
+                // espera 3 segundos para ver se o cliente buscou sua resposta
                 try {
-                    this.sleep(1000);
+                    this.sleep(3000);
                 } catch (InterruptedException ex) {
                 }
-            }
+            }while (responses.containsKey(id));
         }
         
     }

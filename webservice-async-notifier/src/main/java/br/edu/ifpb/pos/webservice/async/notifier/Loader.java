@@ -11,9 +11,9 @@ import javax.xml.ws.Endpoint;
 public class Loader {
 
     public static void main(String[] args) throws IOException {
-        Endpoint.publish("http://localhost:9001/notifier", new Notifier());
-        Endpoint.publish("http://localhost:9001/subscriber", new Subscriber());
-        Notifier.enableSubscribe();
+        PushingChannel pushingChannel = new PushingChannel();
+        Endpoint.publish("http://localhost:9001/notifier", new NotifyChannel(pushingChannel));
+        Endpoint.publish("http://localhost:9001/subscriber", pushingChannel);
     }
     
 }

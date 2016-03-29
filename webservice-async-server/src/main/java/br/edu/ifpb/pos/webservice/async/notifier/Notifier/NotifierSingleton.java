@@ -34,7 +34,7 @@ public class NotifierSingleton {
      */
     private static Notifier retrieveNotifier() throws MalformedURLException, IOException {
         URL url = new URL("http://localhost:9001/notifier");
-        QName qname = new QName("http://notifier.async.webservice.pos.ifpb.edu.br/", "Notifier");
+        QName qname = new QName("http://notifier.async.webservice.pos.ifpb.edu.br/", "NotifyChannel");
         Service service = Service.create(url, qname);
         return service.getPort(Notifier.class);
     }
